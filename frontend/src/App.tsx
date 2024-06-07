@@ -1,10 +1,9 @@
 function App() {
-
   return (
     <>
-    <div className="bg-pink-400">dsfa</div>
+      <div className="bg-pink-400">dsfa</div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

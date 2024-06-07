@@ -1,8 +1,8 @@
-import { combineReducers } from "@reduxjs/toolkit";
-import messageReducer from "./message_slice";
+import { combineReducers } from '@reduxjs/toolkit';
+import messageReducer from './message_slice';
 
 const rootReducer = combineReducers({
-  message: messageReducer,
+  message: messageReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
