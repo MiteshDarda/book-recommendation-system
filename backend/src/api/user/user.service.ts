@@ -9,4 +9,13 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+
+  //$ ------------------------------------------- HELPER: getOne -------------------------------------------
+  getOne(email: string) {
+    const user = this.userRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email })
+      .getOne();
+    return user;
+  }
 }

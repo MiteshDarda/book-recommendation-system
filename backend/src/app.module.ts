@@ -16,7 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       envFilePath: '.env',
     }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET || 'secret',
       global: true,
       signOptions: { expiresIn: '30d' },
     }),

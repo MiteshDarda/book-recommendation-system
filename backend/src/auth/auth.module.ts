@@ -12,7 +12,11 @@ import { User } from 'src/api/user/entities/user.entity';
   imports: [
     UserModule,
     PassportModule,
-    JwtModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'secret',
+      global: true,
+      signOptions: { expiresIn: '30d' },
+    }),
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
