@@ -6,14 +6,19 @@ import { NavigationEnum } from './navigation.enum';
 import verify from '../api/verify';
 
 const auth = async () => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    localStorage.clear();
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.clear();
+      return { isAuthenticated: false };
+    }
+    const verified = await verify(token);
+    console.log('verified', verified);
+    return { isAuthenticated: true };
+  } catch (error) {
+    console.log('error', error);
     return { isAuthenticated: false };
   }
-  const verified = await verify(token);
-  console.log('verified', verified);
-  return { isAuthenticated: true };
 };
 
 const router = createBrowserRouter([

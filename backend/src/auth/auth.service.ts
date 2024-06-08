@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  Global,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/api/user/user.service';
 import { RegisterDto } from './dto/register.dto';
@@ -8,6 +14,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { LogInDto } from './dto/log-in.dto';
 
+@Global()
 @Injectable()
 export class AuthService {
   constructor(

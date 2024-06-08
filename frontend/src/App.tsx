@@ -1,7 +1,9 @@
+import Home from './components/home';
+
 function App() {
   return (
     <>
-      <div className="bg-pink-400">dsfa</div>
+      <Home />
     </>
   );
 }
