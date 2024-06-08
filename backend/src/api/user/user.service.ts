@@ -18,4 +18,12 @@ export class UserService {
       .getOne();
     return user;
   }
+  //$ ------------------------------------------- HELPER: getOneById -------------------------------------------
+  getOneById(id: string) {
+    const user = this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .getOne();
+    return user;
+  }
 }

@@ -9,6 +9,12 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
+import { signIn } from '../../api/sign-in';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { MessageTypeEnum } from '../../store/reducers/enums/message_type.enum';
+import { messageSlice } from '../../store/reducers/message_slice';
+import { NavigationEnum } from '../../router/navigation.enum';
 
 export default function SignIn() {
   //* ---------------------------------------------- Constants/States ----------------------------------------------
@@ -17,10 +23,45 @@ export default function SignIn() {
     handleSubmit,
     formState: { errors }
   } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //* ---------------------------------------------- Functions ----------------------------------------------
-  const formSubmitHandler = (data: any) => {
-    console.log('in', data);
+  const formSubmitHandler = async (data: any) => {
+    try {
+      const res = await signIn(data.email, data.password);
+      const token = res?.token;
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        console.log('decodedToken', decodedToken);
+        localStorage.setItem('token', token);
+        navigate(NavigationEnum.HOME);
+      }
+      dispatch(
+        messageSlice.actions.setMessage({
+          type: MessageTypeEnum.SUCCESS,
+          text: 'Successfully Signed In'
+        })
+      );
+    } catch (error: any) {
+      if (error?.message === 'Network Error') {
+        dispatch(
+          messageSlice.actions.setMessage({
+            type: MessageTypeEnum.ERROR,
+            text: 'Network Error'
+          })
+        );
+        return;
+      }
+      dispatch(
+        messageSlice.actions.setMessage({
+          type: MessageTypeEnum.ERROR,
+          text: error?.response?.data?.message[0] || 'Something went wrong'
+        })
+      );
+      console.log('error', error);
+      console.log('error', error?.message);
+    }
   };
 
   //* ---------------------------------------------- JSX ----------------------------------------------
@@ -33,7 +74,8 @@ export default function SignIn() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers=&query=books)',
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1535905557558-afc4877a26fc?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -53,6 +95,9 @@ export default function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          <Typography component="h1" variant="h4">
+            Book Recommendation System
+          </Typography>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -117,7 +162,11 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link
+                  variant="body2"
+                  onClick={() => {
+                    navigate(NavigationEnum.SIGN_UP);
+                  }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

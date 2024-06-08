@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/api/user/user.service';
 import { RegisterDto } from './dto/register.dto';
@@ -16,6 +16,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+  logger = new Logger('AuthService');
 
   //* ------------------------------------------- REGISTER -------------------------------------------
   async register(registerDto: RegisterDto) {
@@ -57,5 +58,20 @@ export class AuthService {
     return {
       token: this.jwtService.sign({ id: user.id, name: user.name }),
     };
+  }
+
+  //* ------------------------------------------- VERIFY -------------------------------------------
+  async verify(userId: any) {
+    this.logger.log(userId + ' user Verified');
+    return { message: 'User Verified' };
+  }
+
+  //* ------------------------------------------- Decode -------------------------------------------
+  async decode(token: string) {
+    try {
+      return this.jwtService.decode(token);
+    } catch (err) {
+      throw new HttpException('Invalid Token', HttpStatus.UNAUTHORIZED);
+    }
   }
 }

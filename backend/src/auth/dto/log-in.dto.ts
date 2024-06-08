@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  IsStrongPassword,
-  MinLength,
-  NotContains,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, NotContains } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class LogInDto {
@@ -17,8 +10,6 @@ export class LogInDto {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(6)
-  @IsStrongPassword()
   @NotContains(' ', { message: 'Password must not contain spaces' })
   readonly password: string;
 }

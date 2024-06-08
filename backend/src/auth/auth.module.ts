@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserService } from 'src/api/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/api/user/entities/user.entity';
+import { AuthGuard } from './auth.guard';
 
 @Module({
   imports: [
@@ -15,11 +16,13 @@ import { User } from 'src/api/user/entities/user.entity';
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secret',
       global: true,
-      signOptions: { expiresIn: '30d' },
+      signOptions: { expiresIn: process.env.JWT_EXP || '5m' },
     }),
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService],
+  providers: [AuthService, UserService, AuthGuard],
 })
 export class AuthModule {}
+
+console.log(process.env.JWT_EXP);

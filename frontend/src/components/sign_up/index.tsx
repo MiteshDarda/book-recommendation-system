@@ -9,6 +9,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useForm } from 'react-hook-form';
+import { signUp } from '../../api/sign-up';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { MessageTypeEnum } from '../../store/reducers/enums/message_type.enum';
+import { messageSlice } from '../../store/reducers/message_slice';
+import { NavigationEnum } from '../../router/navigation.enum';
 
 export default function SignUp() {
   //* ---------------------------------------------- Constants/States ----------------------------------------------
@@ -17,10 +23,42 @@ export default function SignUp() {
     handleSubmit,
     formState: { errors }
   } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //* ---------------------------------------------- Functions ----------------------------------------------
-  const formSubmitHandler = (data: any) => {
-    console.log('in', data);
+  const formSubmitHandler = async (data: any) => {
+    try {
+      const res = await signUp(data.name, data.email, data.password);
+      console.log('res', res);
+      if (res) {
+        navigate(NavigationEnum.SIGN_IN);
+      }
+      console.log('in', data);
+      dispatch(
+        messageSlice.actions.setMessage({
+          type: MessageTypeEnum.SUCCESS,
+          text: 'Successfully Signed Up'
+        })
+      );
+    } catch (error: any) {
+      if (error?.message === 'Network Error') {
+        dispatch(
+          messageSlice.actions.setMessage({
+            type: MessageTypeEnum.ERROR,
+            text: 'Network Error'
+          })
+        );
+        return;
+      }
+      dispatch(
+        messageSlice.actions.setMessage({
+          type: MessageTypeEnum.ERROR,
+          text: error?.response?.data?.message[0] || 'Something went wrong'
+        })
+      );
+      console.log('error>>>>', error);
+    }
   };
   //* ---------------------------------------------- JSX ----------------------------------------------
   return (
@@ -36,6 +74,9 @@ export default function SignUp() {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
+        <Typography component="h1" variant="h4">
+          Book Recommendation System
+        </Typography>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
@@ -48,33 +89,19 @@ export default function SignUp() {
           onSubmit={handleSubmit((data: any) => formSubmitHandler(data))}
           sx={{ mt: 3 }}>
           {/* 
-         //$ ---------------------------------------------- First name ---------------------------------------------- 
+         //$ ---------------------------------------------- Name ---------------------------------------------- 
          */}
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete="given-name"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="name"
+                label="Name"
                 autoFocus
-                error={!!errors?.firstName}
-                {...register('firstName', { required: true })}
-              />
-            </Grid>
-            {/* 
-         //$ ---------------------------------------------- Last Name ---------------------------------------------- 
-         */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                autoComplete="family-name"
-                error={!!errors?.lastName}
-                {...register('lastName', { required: true })}
+                error={!!errors?.name}
+                {...register('name', { required: true })}
               />
             </Grid>
             {/* 
@@ -132,7 +159,11 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link
+                variant="body2"
+                onClick={() => {
+                  navigate(NavigationEnum.SIGN_IN);
+                }}>
                 Already have an account? Sign in
               </Link>
             </Grid>
