@@ -1,9 +1,10 @@
 import { Download } from '@mui/icons-material';
 import { FC } from 'react';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import Heart from './helper/heart';
 
 interface ItemsRowProps {
   items: any;
+  heading: string;
 }
 
 const onDownloadHandler = (value: any) => {
@@ -12,12 +13,11 @@ const onDownloadHandler = (value: any) => {
     window.open(value?.epub?.downloadLink, '_blank') && window.focus();
 };
 
-const onHeartHandler = (value: any) => {};
-
-const ItemsRow: FC<ItemsRowProps> = ({ items }) => {
+const ItemsRow: FC<ItemsRowProps> = ({ items, heading }) => {
+  console.log('items>>>>>>>>', items);
   return (
     <div>
-      <h1>value</h1>
+      <h1>{heading}</h1>
       <div className="flex flex-wrap">
         {/* --------------------------------- ITEMS ---------------------------------  */}
         {items?.items?.map((item: any, ind: number) => {
@@ -37,11 +37,8 @@ const ItemsRow: FC<ItemsRowProps> = ({ items }) => {
                 onClick={() => onDownloadHandler(item?.accessInfo)}>
                 <Download />
               </div>
-              <div
-                className="fixed top-10 right-0 m-2 text-red-100 hover:text-red-500 cursor-pointer"
-                onClick={() => onHeartHandler(item?.accessInfo)}>
-                <FavoriteTwoToneIcon />
-              </div>
+              {/* --------------------------------- heart icon ---------------------------------  */}
+              <Heart item={item} />
               {/* --------------------------------- title ---------------------------------  */}
               <div className=" text-lg grow">
                 <p>{item?.volumeInfo?.title}</p>

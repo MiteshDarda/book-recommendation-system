@@ -24,16 +24,29 @@ export class BooksService {
       url: `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.GOOGLE_API_KEY}&filter=free-ebooks`,
       headers: {},
     };
-
-    return axios
-      .request(config)
-      .then((response) => {
-        console.log('response', response.data);
-        return response.data;
-      })
-      .catch((error) => {
-        return error;
-      });
+    try {
+      const response = await axios.request(config);
+      const results = await Promise.all(
+        response.data.items.map(async (item: any) => {
+          const isInList = await this.bookWishlist
+            .createQueryBuilder('bookWishlist')
+            .where('bookWishlist.bookId = :bookId', { bookId: item.id })
+            .getOne();
+          console.log('isInList', isInList);
+          if (isInList) {
+            item.isWishlisted = true;
+          } else {
+            item.isWishlisted = false;
+          }
+          return item;
+        }),
+      );
+      console.log(response.data);
+      return { items: results };
+    } catch (error) {
+      console.log('error', error);
+      return error;
+    }
   }
 
   async addToWishlist(bookId: string, userId: string) {
@@ -69,6 +82,53 @@ export class BooksService {
         console.log(newBook);
         return { message: 'Book added to wishlist' };
       }
+    } catch (error) {
+      console.log(error);
+      throw new HttpException('Internal server error', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async searchById(bookId: string) {
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `https://www.googleapis.com/books/v1/volumes/${bookId}?key=${process.env.GOOGLE_API_KEY}`,
+      headers: {},
+    };
+    try {
+      const response = await axios.request(config);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getWishlist(userId: string) {
+    try {
+      const user = await this.userRepository
+        .createQueryBuilder('user')
+        .where('user.id = :id', { id: userId })
+        .getOne();
+
+      if (!user)
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+      const wishlist = await this.bookWishlist
+        .createQueryBuilder('bookWishlist')
+        .where('bookWishlist.user = :userId', { userId })
+        .getMany();
+
+      const result = await Promise.all(
+        wishlist.map(async (item: any) => {
+          const book = await this.searchById(item.bookId);
+          book.isWishlisted = true;
+          return book;
+        }),
+      );
+
+      console.log('wishlist', result);
+
+      return { items: result };
     } catch (error) {
       console.log(error);
       throw new HttpException('Internal server error', HttpStatus.NOT_FOUND);

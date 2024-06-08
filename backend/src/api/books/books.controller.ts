@@ -17,4 +17,11 @@ export class BooksController {
     const userId = request['userId'];
     return this.booksService.addToWishlist(bookId, userId);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('wishlist')
+  getWishlist(@Req() request: Request) {
+    const userId = request['userId'];
+    return this.booksService.getWishlist(userId);
+  }
 }
