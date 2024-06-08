@@ -11,18 +11,18 @@ import Container from '@mui/material/Container';
 import { useForm } from 'react-hook-form';
 
 export default function SignUp() {
-  //* ------------------------------ Constants/States ------------------------------
+  //* ---------------------------------------------- Constants/States ----------------------------------------------
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
 
-  //* ------------------------------ Functions ------------------------------
+  //* ---------------------------------------------- Functions ----------------------------------------------
   const formSubmitHandler = (data: any) => {
     console.log('in', data);
   };
-  //* ------------------------------ JSX ------------------------------
+  //* ---------------------------------------------- JSX ----------------------------------------------
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -32,8 +32,7 @@ export default function SignUp() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
-        }}
-      >
+        }}>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -41,16 +40,15 @@ export default function SignUp() {
           Sign up
         </Typography>
         {/* 
-         //$ ------------------------------ FORM ------------------------------ 
+         //$ ---------------------------------------------- FORM ---------------------------------------------- 
          */}
         <Box
           component="form"
           noValidate
           onSubmit={handleSubmit((data: any) => formSubmitHandler(data))}
-          sx={{ mt: 3 }}
-        >
+          sx={{ mt: 3 }}>
           {/* 
-         //$ ------------------------------ First name ------------------------------ 
+         //$ ---------------------------------------------- First name ---------------------------------------------- 
          */}
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -66,7 +64,7 @@ export default function SignUp() {
               />
             </Grid>
             {/* 
-         //$ ------------------------------ Last Name ------------------------------ 
+         //$ ---------------------------------------------- Last Name ---------------------------------------------- 
          */}
             <Grid item xs={12} sm={6}>
               <TextField
@@ -80,7 +78,7 @@ export default function SignUp() {
               />
             </Grid>
             {/* 
-         //$ ------------------------------ Email ------------------------------ 
+         //$ ---------------------------------------------- Email ---------------------------------------------- 
          */}
             <Grid item xs={12}>
               <TextField
@@ -104,7 +102,7 @@ export default function SignUp() {
               )}
             </Grid>
             {/* 
-         //$ ------------------------------ Password ------------------------------ 
+         //$ ---------------------------------------------- Password ---------------------------------------------- 
          */}
             <Grid item xs={12}>
               <TextField
@@ -119,7 +117,7 @@ export default function SignUp() {
               />
               {errors?.password?.type === 'minLength' ? (
                 <Typography variant="caption" display="block" color={'red'} gutterBottom>
-                  Your password must be at least <b>6 characters long</b>. Please try again.
+                  Your password must be at least <b>6 characters long</b>.
                 </Typography>
               ) : (
                 <></>
@@ -127,7 +125,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
           {/* 
-         //$ ------------------------------ Submit ------------------------------ 
+         //$ ---------------------------------------------- Submit ---------------------------------------------- 
          */}
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign Up
