@@ -51,6 +51,6 @@
 - Rename a file `env` to `.env`
 - Setup Postgres database in you system
 - Change env values accordingly
-- For `GOOGLE_API_KEY` int the .env [Link](https://support.google.com/googleapi/answer/6158862?hl=en) look at this article by google and add the api key in `GOOGLE_API_KEY`
+- For `GOOGLE_API_KEY` in the .env [Link](https://support.google.com/googleapi/answer/6158862?hl=en) look at this article by google and add the api key in `GOOGLE_API_KEY`
 - Run `npm run start:dev`
 - To Change the port you can change it in the `.env` file
