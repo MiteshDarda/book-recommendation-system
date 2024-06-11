@@ -17,7 +17,8 @@ export class BooksService {
     private readonly bookWishlist: Repository<BookWishlist>,
   ) {}
 
-  async search(query: string) {
+  //* ------------------------------------------- SEARCH -------------------------------------------
+  async search(query: string, userId: string) {
     const config = {
       method: 'get',
       maxBodyLength: Infinity,
@@ -31,8 +32,8 @@ export class BooksService {
           const isInList = await this.bookWishlist
             .createQueryBuilder('bookWishlist')
             .where('bookWishlist.bookId = :bookId', { bookId: item.id })
+            .andWhere('bookWishlist.user = :userId', { userId })
             .getOne();
-          console.log('isInList', isInList);
           if (isInList) {
             item.isWishlisted = true;
           } else {
@@ -41,7 +42,6 @@ export class BooksService {
           return item;
         }),
       );
-      console.log(response.data);
       return { items: results };
     } catch (error) {
       console.log('error', error);
@@ -49,6 +49,7 @@ export class BooksService {
     }
   }
 
+  //* ------------------------------------------- ADD TO WISHLIST -------------------------------------------
   async addToWishlist(bookId: string, userId: string) {
     try {
       const user = await this.userRepository
@@ -65,7 +66,6 @@ export class BooksService {
         .andWhere('bookWishlist.user = :userId', { userId })
         .getOne();
 
-      console.log(book);
       if (book) {
         this.bookWishlist
           .createQueryBuilder('bookWishlist')
@@ -79,8 +79,7 @@ export class BooksService {
           .insert()
           .values({ bookId, user })
           .execute();
-        console.log(newBook);
-        return { message: 'Book added to wishlist' };
+        if (newBook) return { message: 'Book added to wishlist' };
       }
     } catch (error) {
       console.log(error);
@@ -88,6 +87,7 @@ export class BooksService {
     }
   }
 
+  //* ------------------------------------------- SEARCH FOR A SINGLE BOOK BY ID -------------------------------------------
   async searchById(bookId: string) {
     const config = {
       method: 'get',
@@ -103,6 +103,7 @@ export class BooksService {
     }
   }
 
+  //* ------------------------------------------- GET WISHLIST -------------------------------------------
   async getWishlist(userId: string) {
     try {
       const user = await this.userRepository
@@ -125,8 +126,6 @@ export class BooksService {
           return book;
         }),
       );
-
-      console.log('wishlist', result);
 
       return { items: result };
     } catch (error) {

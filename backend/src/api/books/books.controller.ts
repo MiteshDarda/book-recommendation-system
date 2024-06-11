@@ -6,11 +6,15 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
+  //* ------------------------------------------- SEARCH -------------------------------------------
+  @UseGuards(AuthGuard)
   @Get()
-  search(@Query('query') query: string) {
-    return this.booksService.search(query);
+  search(@Query('query') query: string, @Req() request: Request) {
+    const userId = request['userId'];
+    return this.booksService.search(query, userId);
   }
 
+  //* ------------------------------------------- ADD TO WISHLIST -------------------------------------------
   @UseGuards(AuthGuard)
   @Post('wishlist')
   addToWishlist(@Query('bookId') bookId: string, @Req() request: Request) {
@@ -18,6 +22,7 @@ export class BooksController {
     return this.booksService.addToWishlist(bookId, userId);
   }
 
+  //* ------------------------------------------- GET WISHLIST -------------------------------------------
   @UseGuards(AuthGuard)
   @Get('wishlist')
   getWishlist(@Req() request: Request) {

@@ -7,10 +7,7 @@ export class BookSuggestions {
   id: number;
 
   @Column({ nullable: true })
-  author: string | null;
-
-  @Column({ nullable: true })
-  category: string | null;
+  term: string | null;
 
   @ManyToOne(() => User, (user) => user.bookWishlist)
   user: BookSuggestions | string;
