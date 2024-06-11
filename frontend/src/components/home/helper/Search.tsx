@@ -60,8 +60,8 @@ const Search = () => {
         data.query,
         localStorage.getItem('token') as string
       )) as any;
-      if (response?.data) {
-        setSearchResults(response?.data);
+      if (response) {
+        setSearchResults(response);
       } else if (response?.error) {
         console.log('error', response?.error);
       }

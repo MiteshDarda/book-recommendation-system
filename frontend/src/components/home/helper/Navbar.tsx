@@ -1,5 +1,5 @@
 // src/components/Navbar.js
-import React, { FC } from 'react';
+import { FC } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';

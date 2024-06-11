@@ -56,7 +56,11 @@ export default function SignUp() {
       dispatch(
         messageSlice.actions.setMessage({
           type: MessageTypeEnum.ERROR,
-          text: error?.response?.data?.message[0] || 'Something went wrong'
+          text:
+            (error?.response?.data?.message?.constructor === Array &&
+              error?.response?.data?.message?.[0]) ||
+            error?.response?.data?.message ||
+            'Something went wrong'
         })
       );
       console.log('error', error);
