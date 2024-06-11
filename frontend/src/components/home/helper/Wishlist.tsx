@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 import ItemsRow from './ItemsRow';
 import { getWishlist } from '../../../api/wishlist';
+import { Box, LinearProgress } from '@mui/material';
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchWishlist = async () => {
+      setLoading(true);
       try {
         const response = (await getWishlist(localStorage.getItem('token') as string)) as any;
-        console.log('response', response);
         if (response) {
-          console.log('data------', response);
           setWishlistItems(response);
-          //   setWishlistItems(['a', 'b', 'c']);
-          console.log('wishlistItems>>>>>', wishlistItems);
         } else if (response?.error) {
           console.log('error', response?.error);
         }
       } catch (error) {
         console.log('error', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchWishlist();
@@ -30,7 +31,13 @@ const Wishlist = () => {
   }, [wishlistItems]);
   return (
     <div className="w-[80%] flex flex-col justify-center items-center">
-      <ItemsRow items={wishlistItems} heading="Wishlist" />
+      {loading ? (
+        <Box sx={{ width: '50%', margin: '1rem' }}>
+          <LinearProgress sx={{ height: '1rem', borderRadius: '1rem' }} />
+        </Box>
+      ) : (
+        <ItemsRow items={wishlistItems} heading="Wishlist" />
+      )}
     </div>
   );
 };

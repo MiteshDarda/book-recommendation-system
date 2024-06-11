@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-export const searchQuery = async (query: string) => {
+export const searchQuery = async (query: string, token: string) => {
   const url = import.meta.env.VITE_BACKEND_URL;
   const config = {
     method: 'get',
     maxBodyLength: Infinity,
     url: `${url}/books?query=${query}`,
-    headers: {}
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   };
 
   return axios

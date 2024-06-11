@@ -1,45 +1,27 @@
 import { SearchOutlined } from '@mui/icons-material';
-import { IconButton, InputBase, Paper } from '@mui/material';
+import { Box, IconButton, InputBase, LinearProgress, Paper } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { searchQuery } from '../../../api/search-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ItemsRow from './ItemsRow';
-import { getWishlist } from '../../../api/wishlist';
 
 const Search = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm();
+  //* ------------------------------------------- CONSTANTS/STATES -------------------------------------------
+  const { register, handleSubmit } = useForm();
 
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([] as any[]);
-  // const [wishlistItems, setWishlistItems] = useState([] as any[]);
+  const [searchTerm, setSearchTerm] = useState('' as string);
 
-  // useEffect(() => {
-  //   const fetchWishlist = async () => {
-  //     try {
-  //       const response = (await getWishlist(localStorage.getItem('token') as string)) as any;
-  //       console.log('response', response);
-  //       if (response?.data) {
-  //         console.log('data', response?.data);
-  //         setWishlistItems(response?.data);
-  //       } else if (response?.error) {
-  //         console.log('error', response?.error);
-  //       }
-  //     } catch (error) {
-  //       console.log('error', error);
-  //     }
-  //   };
-  //   fetchWishlist();
-  // }, [searchResults]);
-
-  const formSubmitHandler = async (data: any) => {
+  //* ------------------------------------------- FUNCTIONS -------------------------------------------
+  const searchHandler = async (data: any) => {
     setLoading(true);
+    setSearchTerm(data.query);
     try {
-      console.log('data', data);
-      const response = (await searchQuery(data.query)) as any;
+      const response = (await searchQuery(
+        data.query,
+        localStorage.getItem('token') as string
+      )) as any;
       console.log('response', response);
       if (response?.data) {
         console.log('data', response?.data);
@@ -54,11 +36,12 @@ const Search = () => {
     }
   };
 
+  //* ------------------------------------------- JSX -------------------------------------------
   return (
     <div className="w-[80%] flex flex-col justify-center items-center">
       <div className="w-full">
         <Paper
-          onSubmit={handleSubmit((data: any) => formSubmitHandler(data))}
+          onSubmit={handleSubmit((data: any) => searchHandler(data))}
           component="form"
           sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <InputBase
@@ -73,8 +56,17 @@ const Search = () => {
           </IconButton>
         </Paper>
       </div>
-      <ItemsRow items={searchResults} heading="Search Results" />
-      {/* <ItemsRow items={wishlistItems} heading="Wishlist" /> */}
+      {/* 
+      //$ --------------------------------- SEARCH RESULTS / BOOKS ---------------------------------  
+      */}
+
+      {loading ? (
+        <Box sx={{ width: '50%', margin: '1rem' }}>
+          <LinearProgress sx={{ height: '1rem', borderRadius: '1rem' }} />
+        </Box>
+      ) : (
+        <ItemsRow items={searchResults} heading={`Search Results for ${searchTerm}`} />
+      )}
     </div>
   );
 };

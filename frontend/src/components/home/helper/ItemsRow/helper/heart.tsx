@@ -1,6 +1,7 @@
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import addToWishlist from '../../../../../api/add-to-wishlist';
 import { useEffect, useState } from 'react';
+import { Tooltip } from '@mui/material';
 
 interface HeartProps {
   item: any;
@@ -24,17 +25,21 @@ const Heart = ({ item }: HeartProps) => {
   return (
     <>
       {isWishlisted ? (
-        <div
-          className="fixed top-10 right-0 m-2 text-red-700 hover:text-red-200 cursor-pointer"
-          onClick={() => onHeartHandler(item)}>
-          <FavoriteTwoToneIcon />
-        </div>
+        <Tooltip title="Remove from wishlist">
+          <div
+            className="fixed top-10 right-0 m-2 text-red-700 hover:text-red-200 cursor-pointer"
+            onClick={() => onHeartHandler(item)}>
+            <FavoriteTwoToneIcon />
+          </div>
+        </Tooltip>
       ) : (
-        <div
-          className="fixed top-10 right-0 m-2 text-red-100 hover:text-red-500 cursor-pointer"
-          onClick={() => onHeartHandler(item)}>
-          <FavoriteTwoToneIcon />
-        </div>
+        <Tooltip title="Add to wishlist">
+          <div
+            className="fixed top-10 right-0 m-2 text-red-100 hover:text-red-500 cursor-pointer"
+            onClick={() => onHeartHandler(item)}>
+            <FavoriteTwoToneIcon />
+          </div>
+        </Tooltip>
       )}
     </>
   );
