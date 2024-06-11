@@ -13,11 +13,9 @@ const Heart = ({ item }: HeartProps) => {
     setIsWishlisted(item.isWishlisted);
   }, [item.isWishlisted]);
   const onHeartHandler = async (value: any) => {
-    console.log('value', value?.id);
     try {
       setIsWishlisted(!isWishlisted);
-      const res = await addToWishlist(value?.id, localStorage.getItem('token') as string);
-      console.log('res', res);
+      await addToWishlist(value?.id, localStorage.getItem('token') as string);
     } catch (err) {
       console.log(err);
     }

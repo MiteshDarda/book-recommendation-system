@@ -13,7 +13,10 @@ const auth = async () => {
       return { isAuthenticated: false };
     }
     const verified = await verify(token);
-    console.log('verified', verified);
+    if (!verified) {
+      localStorage.clear();
+      return { isAuthenticated: false };
+    }
     return { isAuthenticated: true };
   } catch (error) {
     console.log('error', error);
@@ -27,7 +30,6 @@ const router = createBrowserRouter([
     loader: auth,
     Component() {
       const data = useLoaderData() as { isAuthenticated: boolean };
-      console.log('data', data);
       return data?.isAuthenticated ? <App /> : <SignIn />;
     }
   },

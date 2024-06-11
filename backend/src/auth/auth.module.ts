@@ -25,5 +25,3 @@ import { AuthGuard } from './auth.guard';
   providers: [AuthService, UserService, AuthGuard],
 })
 export class AuthModule {}
-
-console.log(process.env.JWT_EXP);

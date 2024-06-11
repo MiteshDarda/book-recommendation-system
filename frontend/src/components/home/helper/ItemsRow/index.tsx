@@ -15,13 +15,11 @@ const onDownloadHandler = (value: any) => {
 };
 
 const ItemsRow: FC<ItemsRowProps> = ({ items, heading }) => {
-  console.log('items>>>>>>>>', items);
-
   //* ------------------------------------------- JSX -------------------------------------------
   return (
-    <div>
-      {items?.items?.length ? <h1 className="text-white text-2xl">{heading}</h1> : <></>}
-      <div className="flex flex-wrap">
+    <div className=" bg-[black] p-4 my-6 rounded-lg">
+      {items?.items?.length ? <h1 className="text-white text-6xl mb-4">{heading}</h1> : <></>}
+      <div className="flex flex-wrap gap-8">
         {/* 
         //$ --------------------------------- ITEMS ---------------------------------  
         */}
@@ -29,13 +27,13 @@ const ItemsRow: FC<ItemsRowProps> = ({ items, heading }) => {
           return (
             <div
               key={ind}
-              className=" m-2 p-2 bg-[#222222] shadow-md rounded-lg shadow-[#636363] drop-shadow-lg h-[400px] w-[250px] flex flex-col justify-center items-start">
+              className=" p-2 bg-[#222222] shadow-sm rounded-lg shadow-[#636363] drop-shadow-lg min-h-[500px] w-[250px] flex flex-col justify-center items-start">
               {/* 
               //$ --------------------------------- THUMBNAIL ---------------------------------  
               */}
               <img
                 src={item?.volumeInfo?.imageLinks?.thumbnail}
-                className="h-[50%] w-auto object-contain"
+                className="h-[50%] w-auto object-contain rounded-2xl mb-2"
                 alt="book"
               />
               {/* 
@@ -75,7 +73,7 @@ const ItemsRow: FC<ItemsRowProps> = ({ items, heading }) => {
               //$ --------------------------------- CATEGORIES ---------------------------------  
               */}
               {item?.volumeInfo?.categories?.length ? (
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-gray-500">
                   Category:
                   {item?.volumeInfo?.categories?.map((author: string, ind: number) => {
                     return <p key={ind}>{author}</p>;

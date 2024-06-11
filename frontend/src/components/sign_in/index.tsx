@@ -15,6 +15,8 @@ import { useDispatch } from 'react-redux';
 import { MessageTypeEnum } from '../../store/reducers/enums/message_type.enum';
 import { messageSlice } from '../../store/reducers/message_slice';
 import { NavigationEnum } from '../../router/navigation.enum';
+import { useState } from 'react';
+import { CircularProgress } from '@mui/material';
 
 export default function SignIn() {
   //* ---------------------------------------------- Constants/States ----------------------------------------------
@@ -25,15 +27,15 @@ export default function SignIn() {
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
 
   //* ---------------------------------------------- Functions ----------------------------------------------
   const formSubmitHandler = async (data: any) => {
     try {
+      setLoading(true);
       const res = await signIn(data.email, data.password);
       const token = res?.token;
       if (token) {
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        console.log('decodedToken', decodedToken);
         localStorage.setItem('token', token);
         navigate(NavigationEnum.HOME);
       }
@@ -60,7 +62,8 @@ export default function SignIn() {
         })
       );
       console.log('error', error);
-      console.log('error', error?.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,7 +161,7 @@ export default function SignIn() {
          //$ ---------------------------------------------- Submit ---------------------------------------------- 
          */}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign In
+              {loading ? <CircularProgress size={26} /> : <>Sign In</>}
             </Button>
             <Grid container>
               <Grid item>

@@ -15,6 +15,8 @@ import { useDispatch } from 'react-redux';
 import { MessageTypeEnum } from '../../store/reducers/enums/message_type.enum';
 import { messageSlice } from '../../store/reducers/message_slice';
 import { NavigationEnum } from '../../router/navigation.enum';
+import { useState } from 'react';
+import { CircularProgress } from '@mui/material';
 
 export default function SignUp() {
   //* ---------------------------------------------- Constants/States ----------------------------------------------
@@ -25,16 +27,16 @@ export default function SignUp() {
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
 
   //* ---------------------------------------------- Functions ----------------------------------------------
   const formSubmitHandler = async (data: any) => {
     try {
+      setLoading(true);
       const res = await signUp(data.name, data.email, data.password);
-      console.log('res', res);
       if (res) {
         navigate(NavigationEnum.SIGN_IN);
       }
-      console.log('in', data);
       dispatch(
         messageSlice.actions.setMessage({
           type: MessageTypeEnum.SUCCESS,
@@ -57,7 +59,9 @@ export default function SignUp() {
           text: error?.response?.data?.message[0] || 'Something went wrong'
         })
       );
-      console.log('error>>>>', error);
+      console.log('error', error);
+    } finally {
+      setLoading(false);
     }
   };
   //* ---------------------------------------------- JSX ----------------------------------------------
@@ -155,7 +159,7 @@ export default function SignUp() {
          //$ ---------------------------------------------- Submit ---------------------------------------------- 
          */}
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign Up
+            {loading ? <CircularProgress size={26} /> : <>Sign up</>}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>

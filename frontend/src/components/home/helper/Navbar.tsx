@@ -24,7 +24,11 @@ const Navbar: FC<NavbarProps> = ({ onLogout }) => {
         borderRadius: 1
       }}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1 }}
+          className="nanum-gothic-regular ">
           Book Recommendation System
         </Typography>
         <Button variant="contained" color="inherit" onClick={onLogout}>
