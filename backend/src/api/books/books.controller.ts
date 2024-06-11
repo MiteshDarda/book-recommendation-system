@@ -29,4 +29,12 @@ export class BooksController {
     const userId = request['userId'];
     return this.booksService.getWishlist(userId);
   }
+
+  //* ------------------------------------------- GET SUGGESTIONS -------------------------------------------
+  @UseGuards(AuthGuard)
+  @Get('suggestions')
+  getSuggestions(@Req() request: Request) {
+    const userId = request['userId'];
+    return this.booksService.getSuggestions(userId);
+  }
 }

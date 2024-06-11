@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
-import ItemsRow from './ItemsRow';
-import { getWishlist } from '../../../api/wishlist';
+import getSuggestions from '../../../api/get-suggestions';
 import { Box, LinearProgress } from '@mui/material';
+import ItemsRow from './ItemsRow';
 
-const Wishlist = () => {
+const Suggestions = () => {
   //* ------------------------------------------- CONSTANTS/STATES -------------------------------------------
-  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  //* ------------------------------------------- USE EFFECT -------------------------------------------
   useEffect(() => {
     const fetchWishlist = async () => {
       setLoading(true);
       try {
-        const response = (await getWishlist(localStorage.getItem('token') as string)) as any;
+        const response = (await getSuggestions(localStorage.getItem('token') as string)) as any;
         if (response) {
-          setWishlistItems(response);
+          setSuggestions(response);
         } else if (response?.error) {
           console.log('error', response?.error);
         }
@@ -27,8 +26,6 @@ const Wishlist = () => {
     };
     fetchWishlist();
   }, []);
-
-  //* ------------------------------------------- JSX -------------------------------------------
   return (
     <div className="w-[90%] flex flex-col justify-center items-left">
       {loading ? (
@@ -36,9 +33,10 @@ const Wishlist = () => {
           <LinearProgress sx={{ height: '1rem', borderRadius: '1rem' }} />
         </Box>
       ) : (
-        <ItemsRow items={wishlistItems} heading="Wishlist" />
+        <ItemsRow items={suggestions} heading="Suggestions" />
       )}
     </div>
   );
 };
-export default Wishlist;
+
+export default Suggestions;

@@ -3,6 +3,7 @@ import Navbar from './helper/Navbar';
 import { NavigationEnum } from '../../router/navigation.enum';
 import Search from './helper/Search';
 import Wishlist from './helper/Wishlist';
+import Suggestions from './helper/Suggestions';
 
 const Home = () => {
   //* -----------------------------------  CONSTANTS/STATES -----------------------------------
@@ -19,6 +20,7 @@ const Home = () => {
     <div className="min-h-screen bg-[#111111] text-white pb-4 px-4 pt-24 w-full flex flex-col justify-start items-center">
       <Navbar onLogout={onLogout} />
       <Search />
+      <Suggestions />
       <Wishlist />
     </div>
   );

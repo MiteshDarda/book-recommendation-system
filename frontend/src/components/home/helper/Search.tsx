@@ -38,7 +38,7 @@ const Search = () => {
 
   //* ------------------------------------------- JSX -------------------------------------------
   return (
-    <div className="w-[80%] flex flex-col justify-center items-center">
+    <div className="w-[90%] flex flex-col justify-center items-left">
       <div className="w-full">
         <Paper
           onSubmit={handleSubmit((data: any) => searchHandler(data))}
@@ -61,7 +61,7 @@ const Search = () => {
       */}
 
       {loading ? (
-        <Box sx={{ width: '50%', margin: '1rem' }}>
+        <Box sx={{ width: '100%', margin: '1rem' }}>
           <LinearProgress sx={{ height: '1rem', borderRadius: '1rem' }} />
         </Box>
       ) : (

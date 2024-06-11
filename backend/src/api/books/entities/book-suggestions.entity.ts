@@ -6,8 +6,8 @@ export class BookSuggestions {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
-  term: string | null;
+  @Column({ nullable: false, unique: false })
+  term: string;
 
   @ManyToOne(() => User, (user) => user.bookWishlist)
   user: BookSuggestions | string;
