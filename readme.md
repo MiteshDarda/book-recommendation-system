@@ -1,19 +1,36 @@
 # Book Recommendation System
 
+## Table Of content
+- [Book Recommendation System](#book-recommendation-system)
+  - [Table Of content](#table-of-content)
+  - [Project Setup](#project-setup)
+    - [Docker](#docker)
+  - [Frontend](#frontend)
+    - [Technologies Used](#technologies-used)
+    - [How to run frontend ?](#how-to-run-frontend-)
+  - [Backend](#backend)
+    - [Technologies Used](#technologies-used-1)
+      - [How to run backend ?](#how-to-run-backend-)
+
 ## Project Setup
-1. > Open Terminal
-2. > Use this command to clone the project `https://github.com/MiteshDarda/book-recommendation-system.git`
-3. > Use this to go inside project `cd book-recommendation-system`
-4. > Use this to go inside frontend `cd frontend`
-5. > Before Next step make sure you have node installed in your system.
-6. > Use this to install frontend dependencies `npm i`
-7. > Use this to go back to the root folder `cd ..`
-8. > Use this to go inside backend `cd backend`
-9. > Before Next step make sure you have Nest-cli installed in your system.
-10. > Use this to install backend dependencies `npm i`
+### Docker
+1. Make sure you have ***docker*** and ***docker-compose*** installed in your system.
+2. Use `git clone https://github.com/MiteshDarda/book-recommendation-system.git` to clone the project into your system
+3. `cd book-recommendation-system` to navigate into your project ![img](/readme-utils/images/clone.png)
+   - Use git bash or linux/unix based terminal
+4. Open the folder in an editor and change `backend/env-docker` file to `backend/.env`
+    - Before :  ![img](/readme-utils/images/before.png)
+    - After : ![img](/readme-utils/images/after.png)
+5. For `GOOGLE_API_KEY` in the .env [Link](https://support.google.com/googleapi/answer/6158862?hl=en) look at this article by google and add the api key in `GOOGLE_API_KEY` also make sure to give correct google books permission while making API_KEY in your google application 
+6. Before next step make sure docker (docker demon) is running in your system
+7. `docker-compose build` this command is used to build the project ![img](/readme-utils/images/build.png)
+8. `docker-compose up` this will start the container with **backend**, **frontend**, and **persistent postgreSQL** ![img](/readme-utils/images/up.png)
+9. Congratulation 🎉🎉🎉 http://localhost:3000/ Your server is running and start by going to to the frontend at port 3000 ![img](/readme-utils/images/frontend.png)
 
-### Frontend
 
+## Frontend
+
+### Technologies Used
 - ReactJs 
 - Redux-toolkit 
   - For state management
@@ -28,7 +45,7 @@
 - react-hook-form
   - For form submissions
 
-#### To run frontend
+### How to run frontend ?
 
 - Go to the frontend directory
 - Rename a file `env` to `.env`
@@ -36,8 +53,9 @@
 - This command alone will start the server and start TailwindCss
 - URL will be provided in the terminal itself
 
-### Backend
+## Backend
 
+### Technologies Used
 - NestJs
 - Typeorm
 - bcrypt
@@ -45,12 +63,11 @@
 - JWT token
 - PostgreSql for Database
 
-#### To run backend
+#### How to run backend ?
 
 - Go to the backend directory
-- Rename a file `env` to `.env`
+- Rename a file `local-env` to `.env`
 - Setup Postgres database in you system
 - Change env values accordingly
-- For `GOOGLE_API_KEY` in the .env [Link](https://support.google.com/googleapi/answer/6158862?hl=en) look at this article by google and add the api key in `GOOGLE_API_KEY`
-- Run `npm run start:dev`
+- For `GOOGLE_API_KEY` in the .env [Link](https://support.google.com/googleapi/answer/6158862?hl=en) look at this article by google and add the api key in `GOOGLE_API_KEY` also make sure to give correct google books permission while making API_KEY in your google application 
 - To Change the port you can change it in the `.env` file
