@@ -13,7 +13,7 @@ services:
       - db
     environment:
       DATABASE_HOST: postgres
-      DATABASE_PORT: 5432
+      DATABASE_PORT: 5433
       DATABASE_USER: postgres
       DATABASE_PASSWORD: 12345678
       DATABASE_NAME: book_reco
@@ -34,9 +34,9 @@ services:
     container_name: postgres-db
     restart: always
     ports:
-      - "5433:5433"
+      - "5433:5432"
     environment:
-      DATABASE_PORT: 5433
+      DATABASE_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345678
       POSTGRES_DB: book_reco
